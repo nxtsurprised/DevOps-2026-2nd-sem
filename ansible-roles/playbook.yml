@@ -1,0 +1,8 @@
+---
+- name: Configure users and SSH through roles
+  hosts: targets
+  become: true
+
+  roles:
+    - role: users
+    - role: ssh

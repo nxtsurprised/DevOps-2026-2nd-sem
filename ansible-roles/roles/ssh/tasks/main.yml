@@ -1,0 +1,23 @@
+---
+- name: Ensure OpenSSH server is installed
+  ansible.builtin.package:
+    name: openssh-server
+    state: present
+
+- name: Disable SSH password authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication\s+'
+    line: "PasswordAuthentication {{ ssh_password_authentication }}"
+    create: false
+    backup: true
+  notify: Restart ssh service
+
+- name: Ensure public key authentication is enabled
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PubkeyAuthentication\s+'
+    line: "PubkeyAuthentication {{ ssh_pubkey_authentication }}"
+    create: false
+    backup: true
+  notify: Restart ssh service

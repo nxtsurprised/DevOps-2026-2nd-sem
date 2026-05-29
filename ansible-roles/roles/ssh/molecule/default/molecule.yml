@@ -1,0 +1,29 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+platforms:
+  - name: ssh-role-ubuntu
+    image: ubuntu:24.04
+    pre_build_image: true
+    privileged: true
+    command: /bin/bash -c "while true; do sleep 10000; done"
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "${MOLECULE_PROJECT_DIRECTORY}/.."
+  playbooks:
+    converge: converge.yml
+  inventory:
+    group_vars:
+      all:
+        ssh_password_authentication: "no"
+        ssh_pubkey_authentication: "yes"
+        ssh_restart_service: false
+
+verifier:
+  name: ansible
