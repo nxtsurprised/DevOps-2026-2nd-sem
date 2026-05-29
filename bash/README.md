@@ -10,8 +10,12 @@
 
 # Ход работы
 1. Создала двух пользователей: testuser1 и testuser2 для проверки.
+
 <img width="651" height="529" alt="image" src="https://github.com/user-attachments/assets/9fa48689-d273-4ab9-bee1-6daaf0ed0a0c" />
+
 2. После подготовки скрипта дала права на запуск.
+
 <img width="653" height="152" alt="image" src="https://github.com/user-attachments/assets/71a5c8f8-a959-4ff6-a087-540637239ade" />
+
 3. Запуск скрипта, вывод лога (из-за mode = 660 нет 'x' части):
 <img width="1018" height="843" alt="image" src="https://github.com/user-attachments/assets/41c7a762-8193-433f-9a34-730835eb6bf1" />
