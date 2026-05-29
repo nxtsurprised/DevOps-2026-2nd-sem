@@ -1,0 +1,71 @@
+---
+- name: Configure user, sudo, SSH key auth and opt directory
+  hosts: targets
+  become: true
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Ensure target user exists
+      ansible.builtin.user:
+        name: "{{ target_user }}"
+        groups: "{{ target_user_groups }}"
+        append: true
+        shell: /bin/bash
+        create_home: true
+        state: present
+
+    - name: Ensure passwordless sudo for target user
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ target_user }}"
+        content: "{{ target_user }} ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: "0440"
+        validate: "visudo -cf %s"
+
+    - name: Ensure .ssh directory exists
+      ansible.builtin.file:
+        path: "/home/{{ target_user }}/.ssh"
+        state: directory
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: "0700"
+
+    - name: Add authorized SSH key for target user
+      ansible.posix.authorized_key:
+        user: "{{ target_user }}"
+        key: "{{ target_user_ssh_key }}"
+        state: present
+
+    - name: Disable SSH password authentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication\s+'
+        line: 'PasswordAuthentication no'
+        create: false
+        backup: true
+      notify: Restart ssh service
+
+    - name: Ensure public key authentication is enabled
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PubkeyAuthentication\s+'
+        line: 'PubkeyAuthentication yes'
+        create: false
+        backup: true
+      notify: Restart ssh service
+
+    - name: Create directory in /opt for target user
+      ansible.builtin.file:
+        path: "{{ opt_directory }}"
+        state: directory
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: "{{ opt_directory_mode }}"
+
+  handlers:
+    - name: Restart ssh service
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
