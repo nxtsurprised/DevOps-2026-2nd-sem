@@ -1,0 +1,15 @@
+---
+managed_users:
+  - name: roleuser
+    groups:
+      - sudo
+    ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOCNI+uy+9lUCH/oD74mpk+5YwY6gNa2BGqHHxYDFl/ ansible-test-key"
+
+managed_opt_directories:
+  - path: /opt/roleuser_workdir
+    owner: roleuser
+    group: roleuser
+    mode: "0660"
+
+ssh_password_authentication: "no"
+ssh_pubkey_authentication: "yes"

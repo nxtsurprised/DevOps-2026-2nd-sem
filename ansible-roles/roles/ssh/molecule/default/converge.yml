@@ -1,0 +1,12 @@
+---
+- name: Converge ssh role
+  hosts: all
+  gather_facts: false
+
+  pre_tasks:
+    - name: Install Python and required packages
+      ansible.builtin.raw: apt-get update && apt-get install -y python3 sudo openssh-server
+      changed_when: false
+
+  roles:
+    - role: ssh

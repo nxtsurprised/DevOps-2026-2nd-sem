@@ -1,0 +1,14 @@
+---
+- name: Verify ssh role
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Check PasswordAuthentication setting
+      ansible.builtin.command: grep -E '^PasswordAuthentication no' /etc/ssh/sshd_config
+      changed_when: false
+
+    - name: Check PubkeyAuthentication setting
+      ansible.builtin.command: grep -E '^PubkeyAuthentication yes' /etc/ssh/sshd_config
+      changed_when: false
