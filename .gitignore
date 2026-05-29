@@ -1,0 +1,14 @@
+
+# Python / Molecule local env
+.venv/
+__pycache__/
+.pytest_cache/
+.molecule/
+.cache/
+
+# SSH private keys
+id_rsa
+id_ed25519
+*.pem
+*.key
+*.log

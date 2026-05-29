@@ -1,0 +1,10 @@
+---
+target_user: ansibleuser
+
+target_user_groups:
+  - sudo
+
+target_user_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ6XFvwco33uMOOkVVgijQgnzARLaDQP23VXw8pBxME7 ansible-test-key"
+
+opt_directory: /opt/ansibleuser_workdir
+opt_directory_mode: "0660"

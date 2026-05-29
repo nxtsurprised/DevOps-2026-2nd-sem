@@ -1,0 +1,51 @@
+---
+- name: Verify users role
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Check molecule user exists
+      ansible.builtin.command: id moleculeuser
+      changed_when: false
+
+    - name: Check sudoers file exists
+      ansible.builtin.stat:
+        path: /etc/sudoers.d/moleculeuser
+      register: sudoers_file
+
+    - name: Assert sudoers file exists
+      ansible.builtin.assert:
+        that:
+          - sudoers_file.stat.exists
+          - sudoers_file.stat.mode == "0440"
+
+    - name: Check authorized_keys exists
+      ansible.builtin.stat:
+        path: /home/moleculeuser/.ssh/authorized_keys
+      register: authorized_keys_file
+
+    - name: Assert authorized_keys exists
+      ansible.builtin.assert:
+        that:
+          - authorized_keys_file.stat.exists
+
+    - name: Check opt directory permissions
+      ansible.builtin.stat:
+        path: /opt/moleculeuser_workdir
+      register: opt_dir
+
+    - name: Assert opt directory properties
+      ansible.builtin.assert:
+        that:
+          - opt_dir.stat.exists
+          - opt_dir.stat.isdir
+          - opt_dir.stat.pw_name == "moleculeuser"
+          - opt_dir.stat.gr_name == "moleculeuser"
+          - opt_dir.stat.mode == "0660"
+
+    - name: Check that 660 directory cannot be entered
+      ansible.builtin.command: sudo -u moleculeuser bash -c 'cd /opt/moleculeuser_workdir'
+      register: cd_check
+      failed_when: cd_check.rc == 0
+      changed_when: false
