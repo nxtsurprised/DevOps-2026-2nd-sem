@@ -7,3 +7,4 @@
 3. Ansible roles + Molecule - `ansible-roles/`
 4. Dockerfile image task - `dockerfile-task/`
 5. Docker Compose task - `docker-compose-task/`
+Итоговая работа в отдельном репозитории – https://github.com/nxtsurprised/ArchPO-the-2th-sem/tree/compose-cleanup
