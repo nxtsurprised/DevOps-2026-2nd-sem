@@ -1,6 +1,7 @@
 # DevOps 2026 2nd semester
 
 ## Работы
+Фарахутдинова Диляра, 11-305
 
 1. Bash script - `bash/`
 2. Ansible playbook - `ansible-playbook/`
