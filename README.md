@@ -9,4 +9,6 @@
 4. Dockerfile image task - `dockerfile-task/`
 5. Docker Compose task - `docker-compose-task/`
 
+Файлы README.md со скринами для каждого задания разнесены по папкам.
+
 Итоговая работа в отдельном репозитории – https://github.com/nxtsurprised/ArchPO-the-2th-sem/tree/compose-cleanup
